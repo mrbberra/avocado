@@ -12,7 +12,9 @@ class TweetFetcherTests(TestCase):
         self.assertNotIn('has-more-items', end_of_feed_class)
 
     def test_can_fetch_a_tweet(self):
-        pass
+        fetcher = TweetFetcher()
+        tweet = fetcher.get_tweets()[0]
+        self.assertIn('tweet', tweet.get_attribute('data-item-type'))
 
     def tearDown(self):
         pass
