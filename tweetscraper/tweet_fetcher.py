@@ -1,11 +1,13 @@
 import time
 from selenium import webdriver, common
+from selenium.webdriver.remote.remote_connection import LOGGER
+LOGGER.setLevel(1)
 
-class TweetFetcher():
+class TweetFetcher:
     def __init__(self):
         # load twitter page using selenium
         self.browser = webdriver.Firefox()
-        self.browser.get('https://twitter.com/fuck')
+        self.browser.get('https://twitter.com/ethnicboyfriend')
 
     def _find_timeline_end_div(self):
         max_wait_time = 5
@@ -29,3 +31,10 @@ class TweetFetcher():
                 self.browser.execute_script('arguments[0].scrollIntoView();', end_div)
                 end_div = self._find_timeline_end_div()
         return end_div
+
+    def get_tweets(self):
+        self._find_timeline_end_div() #ensures we have loaded the page
+        return self.browser.find_elements_by_class_name('js-stream-item')
+
+    def close_browser(self):
+        self.browser.quit()
