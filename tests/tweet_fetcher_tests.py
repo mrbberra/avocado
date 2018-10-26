@@ -16,7 +16,7 @@ class TweetFetcherTests(TestCase):
         self.assertNotIn('has-more-items', end_of_feed_class)
 
     def test_can_and_only_fetches_tweets(self):
-        self.historical_fetcher.scroll_to_end_of_feed() # make entire feed is loaded
+        self.historical_fetcher.scroll_to_end_of_feed() # make sure entire feed is loaded
         tweets = self.historical_fetcher.get_tweets()
         for tweet in tweets:
             self.assertEqual('tweet', tweet.get_attribute('data-item-type'))
