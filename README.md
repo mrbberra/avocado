@@ -1,5 +1,5 @@
 ## Required
-- Python 3.7
+- Python 3.6+
 - virtualenv and virtualenvwrapper (highly suggested)
 - Pip
 - Appropriate [Selenium web driver](https://selenium-python.readthedocs.io/installation.html#drivers) for your choice of browser
