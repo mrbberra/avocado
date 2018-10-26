@@ -13,5 +13,6 @@ mkvirtualenv avocado
 3. Run `pip install -r requirements.txt`
 
 ## Running the tests
-You can run the tests with `nosetests`
+You can run the tests with `nosetests`.
+
 See the docs for [nose command line options](https://nose.readthedocs.io/en/latest/man.html)
