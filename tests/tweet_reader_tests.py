@@ -7,7 +7,6 @@ from tweetscraper.tweet_reader import TweetReader
 class TweetFetcherTests(TestCase):
     def setUp(self):
         self.historical_fetcher = TweetFetcher()
-        self.historical_fetcher.scroll_to_end_of_feed() # make sure page is loaded
         self.raw_tweets = self.historical_fetcher.get_tweets()
 
     def test_can_get_single_tweet_id(self):
