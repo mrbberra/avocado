@@ -2,6 +2,7 @@ import time
 from selenium import webdriver, common
 from datetime import datetime as dt
 
+from tweetscraper.tweet import Tweet
 from tweetscraper.tweet_fetcher import TweetFetcher
 
 class TweetReader:
@@ -60,3 +61,13 @@ class TweetReader:
         embed += '<script async src="https://platform.twitter.com/widgets.js" '
         embed += 'charset="utf-8"></script>'
         return embed
+
+    def create_tweet_object(self):
+        id = self.get_id()
+        timestamp = self.get_publish_datetime()
+        tweet_text = self.get_clean_text_contents()
+        price = -1
+        location = 'UK'
+        embed_link = self.get_tweet_embed()
+        new_tweet = Tweet(id, timestamp, tweet_text, price, location, embed_link)
+        return new_tweet
