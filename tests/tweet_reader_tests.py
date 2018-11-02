@@ -31,10 +31,14 @@ class TweetReaderTests(TestCase):
         embed_code = TweetReader(self.test_tweet).get_tweet_embed()
         self.assertEquals(type(embed_code), type('df'))
 
+    def test_can_get_price(self):
+        price = TweetReader(self.test_tweet).get_avocado_price()
+        self.assertGreaterEqual(price, -1)
+        self.assertLessEqual(price, 10)
+
     def test_can_create_tweet_object(self):
         new_tweet = TweetReader(self.test_tweet).create_tweet_object()
-        tweet_exp = Tweet(1, dt.now(), 'test',
-            avocado_price=-1, avocado_location='UK', embed_link='')
+        tweet_exp = Tweet(id=1)
         self.assertEquals(type(new_tweet), type(tweet_exp))
 
     def tearDown(self):

@@ -1,6 +1,7 @@
 import time
 from selenium import webdriver, common
 from datetime import datetime as dt
+import re
 
 from tweetscraper.tweet import Tweet
 from tweetscraper.tweet_fetcher import TweetFetcher
@@ -8,6 +9,7 @@ from tweetscraper.tweet_fetcher import TweetFetcher
 class TweetReader:
     def __init__(self, raw_tweet):
         self.raw_tweet = raw_tweet
+        self.tweet_text = self.get_clean_text_contents()
 
     def get_id(self):
         return int(self.raw_tweet.get_attribute('data-item-id'))
@@ -62,12 +64,22 @@ class TweetReader:
         embed += 'charset="utf-8"></script>'
         return embed
 
+    def get_avocado_price(self):
+        possible_prices = re.findall("\d+\.?\d*", self.tweet_text)
+        if len(possible_prices) == 1:
+            price = float(possible_prices[0])
+            if price > 10:
+                price = price / 100
+            return price
+        else:
+            return -1
+
     def create_tweet_object(self):
         id = self.get_id()
         timestamp = self.get_publish_datetime()
         tweet_text = self.get_clean_text_contents()
-        price = -1
-        location = 'UK'
+        price = self.get_avocado_price()
         embed_link = self.get_tweet_embed()
-        new_tweet = Tweet(id, timestamp, tweet_text, price, location, embed_link)
+        new_tweet = Tweet(id=id, timestamp=timestamp, price=price,
+            location='UK', embed_link=embed_link)
         return new_tweet
