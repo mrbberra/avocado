@@ -1,12 +1,11 @@
 from unittest import TestCase
-from datetime import datetime as dt
-import random
+from tinydb import TinyDB, Query 
 
 from tweetscraper.tweet_fetcher import TweetFetcher
 from tweetscraper.tweet_reader import TweetReader
 from tweet import Tweet
 
-class TweetReaderTests(TestCase):
+class TweetTests(TestCase):
     def setUp(self):
         self.historical_fetcher = TweetFetcher()
         raw_tweets = self.historical_fetcher.get_tweets()
