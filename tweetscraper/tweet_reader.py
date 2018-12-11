@@ -68,7 +68,7 @@ class TweetReader:
         possible_prices = re.findall("\d+\.?\d*", self.tweet_text)
         if len(possible_prices) == 1:
             price = float(possible_prices[0])
-            if price > 10:
+            if price >= 10:
                 price = price / 100
             return price
         else:

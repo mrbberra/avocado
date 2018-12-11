@@ -1,44 +1,41 @@
 from unittest import TestCase
-from tinydb import TinyDB, Query 
+from tinydb import TinyDB, Query
+import os
 
 from tweetscraper.tweet_fetcher import TweetFetcher
 from tweetscraper.tweet_reader import TweetReader
-from tweet import Tweet
+from tweet import Tweet, PriceValidationError
 
 class TweetTests(TestCase):
     def setUp(self):
-        self.historical_fetcher = TweetFetcher()
-        raw_tweets = self.historical_fetcher.get_tweets()
-        self.test_tweet = raw_tweets[random.randint(0,10)]
+        self.db = TinyDB('testdb.json')
+        self.dbQuery = Query()
 
-    def test_can_get_tweet_id(self):
-        tweet_id = TweetReader(self.test_tweet).get_id()
-        self.assertGreaterEqual(tweet_id, 0)
+    def test_should_validate_price(self):
+        with self.assertRaises(PriceValidationError):
+            tweet = Tweet(id=1, price=43)
+            tweet = Tweet(id=1, price='abc1')
 
-    def test_can_get_tweet_datetime(self):
-        earliest_acceptable = dt(2008,1,1)
-        latest_acceptable = dt.now()
-        tweet_time = TweetReader(self.test_tweet).get_publish_datetime()
-        self.assertGreaterEqual(tweet_time, earliest_acceptable)
-        self.assertLessEqual(tweet_time, latest_acceptable)
+    def test_should_write_to_db(self):
+        tweet = Tweet(id=1)
+        tweet.write_to_db(self.db)
+        self.assertTrue(self.db.contains(self.dbQuery.id == 1))
 
-    def test_can_get_tweet_text(self):
-        tweet_text = TweetReader(self.test_tweet).get_clean_text_contents()
-        self.assertTrue(isinstance(tweet_text, str))
+    def test_should_update_db_if_exists(self):
+        tweet = Tweet(id=1)
+        tweet.write_to_db(self.db)
+        tweet.set_price(2)
+        tweet.write_to_db(self.db)
+        self.assertEquals(self.db.get(self.dbQuery.id == 1)['price'], 2)
 
-    def test_can_get_embed_link(self):
-        embed_code = TweetReader(self.test_tweet).get_tweet_embed()
-        self.assertEquals(type(embed_code), type('df'))
-
-    def test_can_get_price(self):
-        price = TweetReader(self.test_tweet).get_avocado_price()
-        self.assertGreaterEqual(price, -1)
-        self.assertLessEqual(price, 10)
-
-    def test_can_create_tweet_object(self):
-        new_tweet = TweetReader(self.test_tweet).create_tweet_object()
-        tweet_exp = Tweet(id=1)
-        self.assertEquals(type(new_tweet), type(tweet_exp))
+    def test_should_not_insert_duplicate_ids(self):
+        tweet1 = Tweet(id=1)
+        tweet1.write_to_db(self.db)
+        tweet2 = Tweet(id=1, price=1)
+        tweet2.write_to_db(self.db)
+        self.assertEquals(len(self.db.search(self.dbQuery.id == 1)), 1)
 
     def tearDown(self):
-        self.historical_fetcher.close_browser()
+        self.db.close()
+        if os.path.exists('testdb.json'):
+            os.remove('testdb.json')
