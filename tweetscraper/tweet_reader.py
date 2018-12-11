@@ -3,7 +3,7 @@ from selenium import webdriver, common
 from datetime import datetime as dt
 import re
 
-from tweet import Tweet
+from tweetscraper.tweet import Tweet
 from tweetscraper.tweet_fetcher import TweetFetcher
 
 class TweetReader:

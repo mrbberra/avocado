@@ -4,7 +4,7 @@ import os
 
 from tweetscraper.tweet_fetcher import TweetFetcher
 from tweetscraper.tweet_reader import TweetReader
-from tweet import Tweet, PriceValidationError
+from tweetscraper.tweet import Tweet, PriceValidationError
 
 class TweetTests(TestCase):
     def setUp(self):

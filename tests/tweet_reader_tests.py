@@ -4,7 +4,7 @@ import random
 
 from tweetscraper.tweet_fetcher import TweetFetcher
 from tweetscraper.tweet_reader import TweetReader
-from tweet import Tweet
+from tweetscraper.tweet import Tweet
 
 class TweetReaderTests(TestCase):
     def setUp(self):
