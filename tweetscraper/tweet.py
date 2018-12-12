@@ -20,8 +20,13 @@ class Tweet:
 
     def write_to_db(self, db):
         dbQuery = Query()
+        if isinstance(self.timestamp, dt):
+            timestamp_int = int((self.timestamp - dt(2000,1,1)).total_seconds())
+        else:
+            timestamp_int = self.timestamp # allows for default timestamp is 0
         db.upsert({'id': self.id,
-            'timestamp': self.timestamp,
+            'timestamp_str': self.timestamp.__str__(),
+            'timestamp_int': timestamp_int,
             'price': self.price,
             'location': self.location,
             'embed_link': self.embed_link,
