@@ -39,7 +39,7 @@ def load_user(user_id):
 
 @app.route("/data")
 def tweets_data_all():
-    return jsonify(tweet_compiler.all_tweets_query())
+    return jsonify(tweet_compiler.all_tweets_query_api())
 
 @app.route('/data/<int:tweet_id>')
 def tweets_data_id(tweet_id):
@@ -49,10 +49,16 @@ def tweets_data_id(tweet_id):
 def index_view():
     return render_template('base.html')
 
-@app.route('/admin')
+@app.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin_view():
-    return render_template('base.html')
+    if request.method == 'POST':
+        tweet_compiler.update_tweet_price(
+            int(request.form['tweet_id']),
+            float(request.form['price'])
+        )
+    tweets = tweet_compiler.all_tweets_query_admin()
+    return render_template('admin.html', tweets=tweets)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_view():

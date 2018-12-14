@@ -76,7 +76,7 @@ class TweetCompiler:
             self.store_recent_tweets()
             time.sleep(timeout)
 
-    def all_tweets_query(self):
+    def all_tweets_query_api(self):
         tweets = self.db.search(self.dbQuery.id.exists())
         tweets = map(lambda x: {
             'id': x['id'],
@@ -84,6 +84,17 @@ class TweetCompiler:
             'price': x['price']},
             tweets)
         return list(tweets)
+
+    def all_tweets_query_admin(self):
+        tweets = self.db.search(self.dbQuery.id.exists())
+        tweets = map(lambda x: [x['id'], x['embed_link'], x['price']],
+            tweets)
+        return list(tweets)
+
+    def update_tweet_price(self, id, price):
+        round(price, 2)
+        self.db.update({'price': price}, self.dbQuery.id == id)
+        return
 
     def tweet_id_query(self, id):
         return self.db.get(self.dbQuery.id == id)
