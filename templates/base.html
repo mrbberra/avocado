@@ -1,3 +1,14 @@
 <!doctype html>
-<title>Hyde Park Acovado Prive Index</title>
-<h1>Avocados!</h1>
+<title>{% block title %}{% endblock %} - Avocados</title>
+<nav>
+  <h1>Avocados</h1>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>
