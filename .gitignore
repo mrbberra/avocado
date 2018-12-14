@@ -2,4 +2,4 @@ __pycache__
 geckodriver.log
 .coverage
 ghostdriver.log
-develop_db.json
+*.json

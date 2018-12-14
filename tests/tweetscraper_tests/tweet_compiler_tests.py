@@ -10,12 +10,12 @@ from tweetscraper.tweet_compiler import TweetCompiler
 
 class TweetCompilerTests(TestCase):
     def setUp(self):
-        self.compiler = TweetCompiler()
+        self.compiler = TweetCompiler(testing=True)
         self.dbQuery = Query()
 
-    def test_should_use_dev_db(self):
-        if os.path.exists('develop_db.json'):
-            os.remove('develop_db.json')
+    def test_should_use_test_db(self):
+        if os.path.exists('test_db.json'):
+            os.remove('test_db.json')
         new_compiler = TweetCompiler()
         self.assertTrue(os.path.exists('develop_db.json'))
 
