@@ -1,16 +1,16 @@
 from tinydb import TinyDB, Query
 import os
-from flask import Flask, jsonify, render_template, redirect, url_for, request, abort
-from flask_login import LoginManager, login_user, current_user, login_required
 import threading
-from login_functions import User, is_safe_url
+from werkzeug.security import check_password_hash, generate_password_hash
+from flask import Flask, jsonify, render_template, redirect, url_for, request,\
+ abort, session, flash
+from flask_wtf.csrf import CSRFProtect
 
 from tweetscraper.tweet_compiler import TweetCompiler
 
 app = Flask(__name__)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login_view'
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+csrf = CSRFProtect(app)
 tweet_compiler = TweetCompiler()
 
 live_tweet_thread = threading.Thread(
@@ -31,9 +31,16 @@ def run_app():
     live_tweet_thread.start()
     flask_thread.start()
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User()
+def validate_admin_login(username, password):
+    password_hash = os.environ['ADMIN_PASSWORD_HASH']
+    print(password_hash)
+    print(password)
+    print(generate_password_hash(password))
+    if check_password_hash(password_hash, password) and username == 'admin':
+        print('login validated')
+        return True
+    else:
+        return False
 
 #################### VIEWS #####################
 
@@ -50,8 +57,9 @@ def index_view():
     return render_template('base.html')
 
 @app.route('/admin', methods=['GET', 'POST'])
-@login_required
 def admin_view():
+    if not session.get('logged_in', False):
+        return redirect(url_for('login_view'))
     if request.method == 'POST':
         tweet_compiler.update_tweet_price(
             int(request.form['tweet_id']),
@@ -62,14 +70,12 @@ def admin_view():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_view():
-    if current_user.is_authenticated:
+    if session.get('logged_in', False):
         return redirect(url_for('admin_view'))
     if request.method == 'POST':
-        user = User()
-        if user.validate(request.form['username'], request.form['password']):
-            next = request.args.get('next')
-            if not is_safe_url(next):
-                return abort(400)
+        if validate_admin_login(request.form['username'], request.form['password']):
+            session['logged_in'] = True
+            flash('You were successfully logged in')
             return redirect(url_for('admin_view'))
         else:
             return render_template('login.html',
@@ -77,13 +83,14 @@ def login_view():
     else:
         return render_template('login.html', error=None)
 
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route('/logout', methods=['GET','POST'])
 def logout_view():
-    if not current_user.is_authenticated:
-        return redirect(url_for('index_view'))
+    if not session.get('logged_in', False):
+        flash('You are already logged out')
+        return redirect(url_for('login_view'))
     if request.method == 'POST':
-        user = User()
-        user.logout()
+        session['logged_in'] = False
+        flash('You were successfully logged out')
         return redirect(url_for('login_view'))
     else:
         return render_template('logout.html', error=None)
