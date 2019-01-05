@@ -31,7 +31,7 @@ def run_app():
     live_tweet_thread.start()
     flask_thread.start()
 
-def validate_admin_login(username, password):
+def validate_login(username, password):
     password_hash = os.environ['ADMIN_PASSWORD_HASH']
     print(password_hash)
     print(password)
@@ -53,6 +53,7 @@ def tweets_data_id(tweet_id):
     return jsonify(tweet_compiler.tweet_id_query(tweet_id))
 
 @app.route("/index")
+@app.route("/")
 def index_view():
     return render_template('base.html')
 
@@ -73,7 +74,7 @@ def login_view():
     if session.get('logged_in', False):
         return redirect(url_for('admin_view'))
     if request.method == 'POST':
-        if validate_admin_login(request.form['username'], request.form['password']):
+        if validate_login(request.form['username'],request.form['password']):
             session['logged_in'] = True
             flash('You were successfully logged in')
             return redirect(url_for('admin_view'))

@@ -1,28 +1,89 @@
 {% extends 'base.html' %}
 
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#button-default-view").click(function() {
+    var rows = $(".tweet-price-setter");
+    rows.each(function( i ) {
+        $(this).hide();
+      });
+    rows.each(function( i ) {
+      if ($(this).attr("data-price") == "-1.0") {
+        $(this).show();
+      }
+    });
+  });
+});
+$(document).ready(function(){
+  $("#button-all-view").click(function() {
+    var rows = $(".tweet-price-setter");
+    rows.each(function( i ) {
+        $(this).show();
+      });
+  });
+});
+$(document).ready(function(){
+  $("#button-price-adjusted-view").click(function() {
+    var rows = $(".tweet-price-setter");
+    rows.each(function( i ) {
+        $(this).hide();
+      });
+    rows.each(function( i ) {
+      if ($(this).attr("data-price") != "-1.0") {
+        $(this).show();
+      }
+    });
+  });
+});
+$(document).ready(function(){
+  $("#button-real-prices-view").click(function() {
+    var rows = $(".tweet-price-setter");
+    rows.each(function( i ) {
+        $(this).hide();
+      });
+    rows.each(function( i ) {
+      if ($(this).attr("data-price") != "-1.0" && $(this).attr("data-price") != "-2.0") {
+        $(this).show();
+      }
+    });
+  });
+});
+</script>
+{% endblock %}
+
 {% block header %}
-  <h1>{% block title %}Admin{% endblock %}</h1>
+<h1>{% block title %}Admin{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-  {% for tweet in tweets %}
+<div id="filter-options">
+  <button id="button-all-view">Show all tweets</button>
+  <button id="button-default-view">Show tweets that haven't been priced</button>
+  <button id="button-price-adjusted-view">Show manually priced tweets</button>
+  <button id="button-real-prices-view">Show tweets with real prices</button>
+</div>
+{% for tweet in tweets %}
+  <div class="tweet-price-setter" data-price="{{ tweet[2] }}">
     <div class="tweet">
       {% autoescape off %}
         {{ tweet[1] }}
       {% endautoescape %}
     </div>
-    <div class="pricetable">
+    <div>
       <table style="width:50%">
         <tr>
           <th>Current Price: {{ tweet[2] }}</th>
-          <th>
             <form method="post" action="/admin">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <input type="hidden" name="tweet_id" id="tweet_id" value="{{ tweet[0] }}"/>
               <input name="price" id="price" required>
               <input type="submit" value="Update Price">
             </form>
-          </th>
         </tr>
       </table>
-  {% endfor %}
+    </div>
+  </div>
+{% endfor %}
 {% endblock %}
