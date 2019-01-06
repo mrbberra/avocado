@@ -3,53 +3,51 @@
 {% block script %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
-  $("#button-default-view").click(function() {
-    var rows = $(".tweet-price-setter");
-    rows.each(function( i ) {
-        $(this).hide();
-      });
-    rows.each(function( i ) {
-      if ($(this).attr("data-price") == "-1.0") {
-        $(this).show();
-      }
+
+// @param: string
+function getTweetView(buttonId) {
+  var rows = $(".tweet-price-setter");
+  rows.each(function( i ) {
+      $(this).hide();
     });
-  });
-});
-$(document).ready(function(){
-  $("#button-all-view").click(function() {
-    var rows = $(".tweet-price-setter");
-    rows.each(function( i ) {
+  rows.each(function( i ) {
+    switch (buttonId) {
+      case ("button-default-view"):
+        if ($(this).attr("data-price") == "-1.0") {
+          $(this).show();
+        }
+        break;
+
+      case ("button-all-view"):
         $(this).show();
-      });
+        break;
+
+      case ("button-price-adjusted-view"):
+        if ($(this).attr("data-price") != "-1.0") {
+          $(this).show();
+        }
+        break;
+
+      case ("button-real-prices-view"):
+        if ($(this).attr("data-price") != "-1.0" && $(this).attr("data-price") != "-2.0") {
+          $(this).show();
+        }
+        break;
+    }
+
   });
+}
+
+$(document).ready(function() {
+
+  getTweetView("button-default-view");
+
+  $(".view-choice-button").on('click', function() {
+    getTweetView($(this).attr('id'));
+  }
+  );
 });
-$(document).ready(function(){
-  $("#button-price-adjusted-view").click(function() {
-    var rows = $(".tweet-price-setter");
-    rows.each(function( i ) {
-        $(this).hide();
-      });
-    rows.each(function( i ) {
-      if ($(this).attr("data-price") != "-1.0") {
-        $(this).show();
-      }
-    });
-  });
-});
-$(document).ready(function(){
-  $("#button-real-prices-view").click(function() {
-    var rows = $(".tweet-price-setter");
-    rows.each(function( i ) {
-        $(this).hide();
-      });
-    rows.each(function( i ) {
-      if ($(this).attr("data-price") != "-1.0" && $(this).attr("data-price") != "-2.0") {
-        $(this).show();
-      }
-    });
-  });
-});
+
 </script>
 {% endblock %}
 
@@ -59,10 +57,10 @@ $(document).ready(function(){
 
 {% block content %}
 <div id="filter-options">
-  <button id="button-all-view">Show all tweets</button>
-  <button id="button-default-view">Show tweets that haven't been priced</button>
-  <button id="button-price-adjusted-view">Show manually priced tweets</button>
-  <button id="button-real-prices-view">Show tweets with real prices</button>
+  <button class="view-choice-button" id="button-default-view">Show tweets that haven't been priced (default)</button>
+  <button class="view-choice-button" id="button-all-view">Show all tweets</button>
+  <button class="view-choice-button" id="button-price-adjusted-view">Show manually priced tweets</button>
+  <button class="view-choice-button" id="button-real-prices-view">Show tweets with real prices</button>
 </div>
 {% for tweet in tweets %}
   <div class="tweet-price-setter" data-price="{{ tweet[2] }}">
