@@ -73,12 +73,14 @@ $(document).ready(function() {
       <table style="width:50%">
         <tr>
           <th>Current Price: {{ tweet[2] }}</th>
+          <th>
             <form method="post" action="/admin">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <input type="hidden" name="tweet_id" id="tweet_id" value="{{ tweet[0] }}"/>
               <input name="price" id="price" required>
               <input type="submit" value="Update Price">
             </form>
+          </th>
         </tr>
       </table>
     </div>
