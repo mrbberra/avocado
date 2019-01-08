@@ -1,0 +1,17 @@
+<!doctype html>
+<head>
+  {% block script %}{% endblock %}
+</head>
+<title>{% block title %}{% endblock %} - Avocados</title>
+<nav>
+  <h1>Avocados</h1>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>
