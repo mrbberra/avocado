@@ -3,7 +3,7 @@ from selenium import webdriver, common
 from datetime import datetime as dt
 import re
 
-from .tweet import Tweet
+from .tweet import Tweet, tweet_save_to_db
 from .tweet_fetcher import TweetFetcher
 
 class TweetReader:
@@ -74,12 +74,12 @@ class TweetReader:
         else:
             return -1
 
-    def create_tweet_object(self):
+    def create_and_save_tweet(self):
         id = self.get_id()
         timestamp = self.get_publish_datetime()
         tweet_text = self.get_clean_text_contents()
         price = self.get_avocado_price()
         embed_link = self.get_tweet_embed()
-        new_tweet = Tweet(id=id, timestamp=timestamp, price=price,
+        tweet_save_to_db(id=id, timestamp=timestamp, price=price,
             location='UK', embed_link=embed_link)
-        return new_tweet
+        return id

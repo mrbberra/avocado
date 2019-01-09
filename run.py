@@ -2,9 +2,11 @@
 from webserver import app, tweet_compiler
 import threading
 
+tweets = tweet_compiler.TweetCompiler()
+
 live_tweet_thread = threading.Thread(
     name='live-tweet-daemon',
-    target=tweet_compiler.TweetCompiler().get_live_tweets,
+    target=tweets.get_live_tweets,
     kwargs={'timeout':5000}
 )
 flask_thread = threading.Thread(
@@ -13,8 +15,7 @@ flask_thread = threading.Thread(
     kwargs={'port':5000,'debug':True,'use_reloader':False}
 )
 
-tweet_compiler = tweet_compiler.TweetCompiler()
-tweet_compiler.get_historical_tweets()
+tweets.get_historical_tweets()
 live_tweet_thread.setDaemon(True)
 live_tweet_thread.start()
 flask_thread.start()

@@ -7,6 +7,7 @@ logging.basicConfig(level=logging.INFO,
                     format='(%(threadName)-10s) %(message)s',
                     )
 
+from webserver import db
 from .tweet_fetcher import TweetFetcher
 from .tweet_reader import TweetReader
 from .tweet import Tweet
@@ -29,13 +30,10 @@ class TweetCompiler:
         historical_fetcher.scroll_to_end_of_feed()
         self.logger.info('Accessing tweets...')
         tweets = historical_fetcher.get_tweets()
-        self.logger.info('Parsing tweets...')
+        self.logger.info('Parsing and saving tweets...')
         processed_tweets = list(map(lambda tweet_raw:
-            TweetReader(tweet_raw).create_tweet_object(),
+            TweetReader(tweet_raw).create_and_save_tweet(),
             tweets))
-        self.logger.info('Saving tweets...')
-        for tweet in reversed(processed_tweets):
-            tweet.write_to_db(self.db)
         historical_fetcher.close_browser()
 
     def get_historical_tweets(self):
@@ -48,19 +46,19 @@ class TweetCompiler:
         live_fetcher = TweetFetcher()
         while True:
             self.logger.info('Checking last stored tweet...')
-            last_stored_tweet = self.db.get(doc_id=len(self.db))
-            self.logger.info('Last stored tweet id is %d', last_stored_tweet['id'])
+            max_timestamp = db.session.query(db.func.max(Tweet.timestamp_int)).scalar()
+            most_recent_tweet_id = Tweet.query.filter_by(
+                timestamp_int=max_timestamp).first().id
+            self.logger.info('Last stored tweet id is %d', most_recent_tweet_id)
             self.logger.info('Fetching a page of tweets...')
             recent_tweets = live_fetcher.get_tweets() # this scrolls down and loads more each time
-            self.logger.info('Parsing tweets...')
+            self.logger.info('Parsing and saving tweets...')
             loaded_tweet_objects = map(lambda tweet_raw:
-                TweetReader(tweet_raw).create_tweet_object(),
+                TweetReader(tweet_raw).create_and_save_tweet(),
                 recent_tweets)
-            self.logger.info('Saving tweets...')
-            map(lambda tweet: tweet.write_to_db(self.db), loaded_tweet_objects)
             self.logger.info('Checking if more tweets need to be loaded...')
-            matches_last_stored = list(filter(lambda tweet:
-                last_stored_tweet['id'] == tweet.id,
+            matches_last_stored = list(filter(lambda id:
+                id == most_recent_tweet_id,
                 loaded_tweet_objects
             ))
             if len(matches_last_stored) > 0:
