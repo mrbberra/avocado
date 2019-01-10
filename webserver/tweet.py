@@ -1,7 +1,6 @@
 import time
 from selenium import webdriver, common
 from datetime import datetime as dt
-from tinydb import TinyDB, Query
 import logging
 
 from webserver import db
