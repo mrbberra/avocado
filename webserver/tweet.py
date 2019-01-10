@@ -2,6 +2,7 @@ import time
 from selenium import webdriver, common
 from datetime import datetime as dt
 from tinydb import TinyDB, Query
+import logging
 
 from webserver import db
 from .tweet_fetcher import TweetFetcher
@@ -35,10 +36,22 @@ class Tweet(db.Model):
         else:
             return timestamp # allows for default timestamp is 0
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'timestamp_str': self.timestamp_str,
+            'timestamp_int': self.timestamp_int,
+            'price': self.price,
+            'location': self.location,
+            'embed_link': self.embed_link
+        }
+
 def tweet_save_to_db(id, timestamp=0, price=-1, location='UK', embed_link=''):
-    found_tweet = Tweet.query.filter_by(id=id).first()
-    if found_tweet:
-        db.session.delete(found_tweet)
     tweet = Tweet(id, timestamp, price, location, embed_link)
-    db.session.add(tweet)
-    db.session.commit()
+    db_existing_tweet = Tweet.query.filter_by(id=id).first()
+    if db_existing_tweet:
+        return
+    else:
+        db.session.delete(db_existing_tweet)
+        db.session.add(tweet)
+        db.session.commit()

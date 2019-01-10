@@ -18,11 +18,10 @@ db = SQLAlchemy(app)
 
 # Import a module / component using its blueprint handler variable (mod_auth)
 from webserver.tweet import Tweet
+from webserver.api import api_views
 
 # Register blueprint(s)
-#app.register_blueprint(auth_module)
-# app.register_blueprint(xyz_module)
-# ..
+app.register_blueprint(api_views, url_prefix='/data')
 
 # Build the database:
 # This will create the database file using SQLAlchemy
