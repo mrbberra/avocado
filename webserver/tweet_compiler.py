@@ -1,4 +1,3 @@
-from tinydb import TinyDB, Query
 import os
 import time
 import logging
@@ -13,14 +12,7 @@ from .tweet_reader import TweetReader
 from .tweet import Tweet
 
 class TweetCompiler:
-    def __init__(self, testing=False):
-        if testing == True:
-            self.db = TinyDB('test_db.json')
-        elif os.environ.get('USE_PROD_DB', False):
-            self.db = TinyDB('prod_db.json')
-        else:
-            self.db = TinyDB('develop_db.json')
-        self.dbQuery = Query()
+    def __init__(self):
         self.logger = logging.getLogger(__name__)
         logging.disable(logging.DEBUG)
 
@@ -38,7 +30,7 @@ class TweetCompiler:
 
     def get_historical_tweets(self):
         self.logger.info('Fetching historical tweets.')
-        if len(self.db) == 0:
+        if len(Tweet.query.all()) == 0:
             self.store_historical_tweets()
         self.logger.info('Finished fetching historical tweets.')
 
