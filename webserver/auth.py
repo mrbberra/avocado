@@ -1,6 +1,6 @@
 import os
 import threading
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 from flask import Flask, render_template, redirect, url_for, request,\
  session, flash, Blueprint
 
@@ -8,9 +8,6 @@ auth_views = Blueprint('auth_views', __name__,
                         template_folder='templates')
 
 def validate_login(username, password):
-    print(password_hash)
-    print(password)
-    print(generate_password_hash(password))
     if check_password_hash(ADMIN_PASSWORD_HASH, password) and username == 'admin':
         print('login validated')
         return True
