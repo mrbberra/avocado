@@ -4,9 +4,9 @@ from selenium import webdriver, common
 class TweetFetcher:
     def __init__(self):
         # load twitter page using selenium
-        options = webdriver.firefox.options.Options()
+        options = webdriver.chrome.options.Options()
         options.set_headless(headless=True)
-        self.browser = webdriver.Firefox(firefox_options=options)
+        self.browser = webdriver.Chrome(chrome_options=options)
         self.browser.get('https://twitter.com/hpavocadoprice')
 
     def _find_timeline_end_div(self):

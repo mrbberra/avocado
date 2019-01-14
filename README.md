@@ -2,7 +2,10 @@
 - Python 3.6+
 - virtualenv and virtualenvwrapper (highly suggested)
 - Pip
-- Appropriate [Selenium web driver](https://selenium-python.readthedocs.io/installation.html#drivers) for your choice of browser
+- Postgres, available at the project [website](https://www.postgresql.org/) or from a package manager like [brew](https://brew.sh/).
+- Appropriate [Selenium web driver](https://selenium-python.readthedocs.io/installation.html#drivers) for your choice of browser.
+  - Web drivers can also be installed using brew.
+  - Currently, this project uses Chrome for compatibility with Heroku. If you wish to use something else, you will have to modify the TweetFetcher __init__ statement.
 
 ## Installation
 1. Clone the repo.
@@ -11,6 +14,10 @@
 $ mkvirtualenv avocado
 ```
 3. Run `pip install -r requirements.txt`
+4. Create the postgres database
+```
+createdb <db_name>
+```
 
 ## Running the server in development
 The server requires the following environment variables to be set:
@@ -35,5 +42,3 @@ The port, password, and debug mode are all configurable:
 ```
 $ fab local --password=admin --port=8000 --debug=False
 ```
-
-See the docs for [nose command line options](https://nose.readthedocs.io/en/latest/man.html)
