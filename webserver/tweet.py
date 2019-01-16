@@ -51,7 +51,7 @@ def tweet_save_to_db(id, timestamp=0, price=-1, location='UK', embed_link=''):
     if not db_existing_tweet:
         db.session.add(tweet)
         db.session.commit()
-    else if db_existing_tweet == tweet:
+    elif db_existing_tweet == tweet:
         return
     else:
         db.session.delete(db_existing_tweet)
