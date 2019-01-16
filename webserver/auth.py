@@ -4,6 +4,8 @@ from werkzeug.security import check_password_hash
 from flask import Flask, render_template, redirect, url_for, request,\
  session, flash, Blueprint
 
+ADMIN_PASSWORD_HASH = os.environ['ADMIN_PASS_HASH']
+
 auth_views = Blueprint('auth_views', __name__,
                         template_folder='templates')
 

@@ -23,6 +23,3 @@ CSRF_SESSION_KEY = os.environ['CSRF_KEY']
 
 # Secret key for signing cookies
 SECRET_KEY = os.environ['SECRET_KEY']
-
-# Secret key for signing cookies
-ADMIN_PASSWORD_HASH = os.environ['ADMIN_PASS_HASH']
