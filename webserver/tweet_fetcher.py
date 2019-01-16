@@ -1,12 +1,21 @@
 import time
+import os
 from selenium import webdriver, common
+
+CHROME_BIN = os.environ['GOOGLE_CHROME_SHIM']
+CHROMEDRIVER_PATH = os.environ.get('CHROMEDRIVER_PATH')
 
 class TweetFetcher:
     def __init__(self):
         # load twitter page using selenium
         options = webdriver.chrome.options.Options()
+        options.binary_location = CHROME_BIN
         options.set_headless(headless=True)
-        self.browser = webdriver.Chrome(chrome_options=options)
+        if CHROMEDRIVER_PATH:
+            self.browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,
+                chrome_options=options)
+        else:
+            self.browser = webdriver.Chrome(chrome_options=options)
         self.browser.get('https://twitter.com/hpavocadoprice')
 
     def _find_timeline_end_div(self):
