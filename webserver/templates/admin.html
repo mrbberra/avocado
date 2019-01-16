@@ -46,6 +46,19 @@ $(document).ready(function() {
     getTweetView($(this).attr('id'));
   }
   );
+
+  $('#filter-options').hide();
+  $('#dropdown').on('click', function(){
+    $('#filter-options').show();
+    $('.current').hide()
+  });
+  $('#filter-options li').on('click', function(option){
+    $('#current-view').text($(this).text());
+    $('#filter-options').hide();
+    ('.current').removeClass('current')
+    $(this).addClass('current');
+    option.preventDefault();
+  })
 });
 
 </script>
@@ -56,12 +69,16 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
-<div id="filter-options">
-  <button class="view-choice-button" id="button-default-view">Show tweets that haven't been priced (default)</button>
-  <button class="view-choice-button" id="button-all-view">Show all tweets</button>
-  <button class="view-choice-button" id="button-price-adjusted-view">Show manually priced tweets</button>
-  <button class="view-choice-button" id="button-real-prices-view">Show tweets with real prices</button>
-</div>
+<nav>
+  <span>Currently displaying </span><span id="current-view">tweets that haven't been priced (default)</span>
+  <button id="dropdown">Change View</button>
+  <ul id="filter-options">
+    <li class="view-choice-button" id="button-default-view">tweets that haven't been priced (default)</button>
+    <li class="view-choice-button" id="button-all-view">all tweets</button>
+    <li class="view-choice-button" id="button-price-adjusted-view">manually priced tweets</button>
+    <li class="view-choice-button" id="button-real-prices-view">tweets with real prices</button>
+  </ul>
+</nav>
 {% for tweet in tweets %}
   <div class="tweet-price-setter" data-price="{{ tweet[2] }}">
     <div class="tweet">
