@@ -10,6 +10,7 @@ Flask-Login==0.4.1
 Flask-SQLAlchemy==2.3.2
 Flask-Testing==0.7.1
 Flask-WTF==0.14.2
+gunicorn==19.9.0
 idna==2.8
 invoke==1.2.0
 itsdangerous==1.1.0
