@@ -17,7 +17,6 @@ def generate_command(password, debug, port):
         'CSRF_KEY': generate_random_string(30),
         'ADMIN_PASS_HASH': generate_password_hash(password),
         'PORT': port,
-        'GOOGLE_CHROME_SHIM': '/usr/bin/google-chrome',
         'PATH': os.environ['PATH']
     }
     if debug == 'True':

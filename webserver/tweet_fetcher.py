@@ -2,16 +2,16 @@ import time
 import os
 from selenium import webdriver, common
 
-CHROME_BIN = os.environ['GOOGLE_CHROME_SHIM']
+CHROME_BIN = os.environ.get('GOOGLE_CHROME_SHIM')
 CHROMEDRIVER_PATH = os.environ.get('CHROMEDRIVER_PATH')
 
 class TweetFetcher:
     def __init__(self):
         # load twitter page using selenium
         options = webdriver.chrome.options.Options()
-        options.binary_location = CHROME_BIN
         options.set_headless(headless=True)
-        if CHROMEDRIVER_PATH:
+        if CHROMEDRIVER_PATH: # For heroku deploy only
+            options.binary_location = CHROME_BIN
             self.browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,
                 chrome_options=options)
         else:

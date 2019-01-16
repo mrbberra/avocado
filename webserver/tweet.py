@@ -48,7 +48,10 @@ class Tweet(db.Model):
 def tweet_save_to_db(id, timestamp=0, price=-1, location='UK', embed_link=''):
     tweet = Tweet(id, timestamp, price, location, embed_link)
     db_existing_tweet = Tweet.query.filter_by(id=id).first()
-    if db_existing_tweet:
+    if not db_existing_tweet:
+        db.session.add(tweet)
+        db.session.commit()
+    if db_existing_tweet == tweet:
         return
     else:
         db.session.delete(db_existing_tweet)
