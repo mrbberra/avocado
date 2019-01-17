@@ -20,7 +20,7 @@ flask_thread = threading.Thread(
     kwargs={'port':FLASK_PORT,'debug':DEBUG,'use_reloader':False}
 )
 
+flask_thread.start()
 tweets.get_historical_tweets()
 live_tweet_thread.setDaemon(True)
 live_tweet_thread.start()
-flask_thread.start()
