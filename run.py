@@ -17,7 +17,7 @@ live_tweet_thread = threading.Thread(
 flask_thread = threading.Thread(
     name='flask-app',
     target=app.run,
-    kwargs={'port':FLASK_PORT,'debug':DEBUG,'use_reloader':False}
+    kwargs={'debug':DEBUG,'use_reloader':False}
 )
 
 flask_thread.start()
