@@ -1,4 +1,4 @@
-# Run a test server.
+# For running all the threads- used for local development in place of Procfile
 from webserver import app, tweet_compiler
 import threading
 import os
@@ -17,10 +17,10 @@ live_tweet_thread = threading.Thread(
 flask_thread = threading.Thread(
     name='flask-app',
     target=app.run,
-    kwargs={'debug':DEBUG,'use_reloader':False}
+    kwargs={'port':FLASK_PORT,'debug':DEBUG,'use_reloader':False}
 )
 
-flask_thread.start()
 tweets.get_historical_tweets()
 live_tweet_thread.setDaemon(True)
 live_tweet_thread.start()
+flask_thread.start()
