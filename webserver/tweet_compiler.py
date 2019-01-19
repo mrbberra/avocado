@@ -41,7 +41,7 @@ class TweetCompiler:
             max_timestamp = db.session.query(db.func.max(Tweet.timestamp_int)).scalar()
             most_recent_tweet = Tweet.query.filter_by(
                 timestamp_int=max_timestamp).first()
-            if most_recent_tweet_id:
+            if most_recent_tweet:
                 most_recent_tweet_id = most_recent_tweet.id
             else:
                 most_recent_tweet_id = 0
