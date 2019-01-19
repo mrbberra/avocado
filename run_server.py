@@ -4,4 +4,5 @@ import os
 
 if os.environ['DEBUG']:
     DEBUG = True
-app.run(debug=DEBUG,use_reloader=False)
+if __name__ == '__main__':
+    app.run(debug=DEBUG,use_reloader=False)
