@@ -39,8 +39,12 @@ class TweetCompiler:
         while True:
             self.logger.info('Checking last stored tweet...')
             max_timestamp = db.session.query(db.func.max(Tweet.timestamp_int)).scalar()
-            most_recent_tweet_id = Tweet.query.filter_by(
-                timestamp_int=max_timestamp).first().id
+            most_recent_tweet = Tweet.query.filter_by(
+                timestamp_int=max_timestamp).first()
+            if most_recent_tweet_id:
+                most_recent_tweet_id = most_recent_tweet.id
+            else:
+                most_recent_tweet_id = 0
             self.logger.info('Last stored tweet id is %d', most_recent_tweet_id)
             self.logger.info('Fetching a page of tweets...')
             recent_tweets = live_fetcher.get_tweets() # this scrolls down and loads more each time
