@@ -30,7 +30,7 @@ class TweetCompiler:
 
     def get_historical_tweets(self):
         self.logger.info('Fetching historical tweets.')
-        if len(Tweet.query.all()) == 0:
+        if len(Tweet.query.all()) < 100:
             self.store_historical_tweets()
         self.logger.info('Finished fetching historical tweets.')
 
