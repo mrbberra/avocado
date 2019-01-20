@@ -10,6 +10,6 @@ api_views = Blueprint('api_views', __name__)
 def tweets_data_all():
     return jsonify(tweet_compiler.all_tweets_query_api())
 
-@api_views.route('/<int:tweet_id>')
+@api_views.route('/<tweet_id>')
 def tweets_data_id(tweet_id):
     return jsonify(tweet_compiler.tweet_id_query(tweet_id))
