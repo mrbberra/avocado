@@ -20,7 +20,7 @@ def admin_view():
         return redirect(url_for('auth_views.login_view'))
     if request.method == 'POST':
         tweet_compiler.update_tweet_price(
-            int(request.form['tweet_id']),
+            request.form['tweet_id'],
             float(request.form['price'])
         )
     tweets = tweet_compiler.all_tweets_query_admin()
