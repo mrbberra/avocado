@@ -10,6 +10,7 @@ def generate_random_string(num_charachters):
         k=num_charachters))
 
 def generate_command(password, debug, port):
+    base_dir = os.path.abspath(os.path.dirname(__file__))
     if password == '':
         password = generate_random_string(15)
     env_dict = {
@@ -17,7 +18,8 @@ def generate_command(password, debug, port):
         'CSRF_KEY': generate_random_string(30),
         'ADMIN_PASS_HASH': generate_password_hash(password),
         'PORT': port,
-        'PATH': os.environ['PATH']
+        'PATH': os.environ['PATH'],
+        'DATABASE_URL': 'sqlite:///' + os.path.join(base_dir, 'app.db')
     }
     if debug == 'True':
         env_dict['DEBUG'] = 'True'
