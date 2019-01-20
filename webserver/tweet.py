@@ -14,7 +14,7 @@ class Tweet(db.Model):
 
     __tablename__ = 'tweet_table'
 
-    id = db.Column(db.Integer,  nullable=False, unique=True, primary_key=True)
+    id = db.Column(db.BigInteger,  nullable=False, unique=True, primary_key=True)
     timestamp_str = db.Column(db.String(128),  nullable=False)
     timestamp_int = db.Column(db.Integer,  nullable=False)
     price = db.Column(db.Float, nullable=False)
