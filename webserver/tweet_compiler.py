@@ -44,10 +44,11 @@ class TweetCompiler:
             if most_recent_tweet:
                 most_recent_tweet_id = most_recent_tweet.id
             else:
-                most_recent_tweet_id = 0
-            self.logger.info('Last stored tweet id is %d', most_recent_tweet_id)
+                most_recent_tweet_id = '0'
+            self.logger.info('Last stored tweet id is %s', most_recent_tweet_id)
             self.logger.info('Fetching a page of tweets...')
-            recent_tweets = live_fetcher.get_tweets() # this scrolls down and loads more each time
+            # scroll down and load a new page of tweets
+            recent_tweets = live_fetcher.get_tweets()
             self.logger.info('Parsing and saving tweets...')
             loaded_tweet_objects = map(lambda tweet_raw:
                 TweetReader(tweet_raw).create_and_save_tweet(),
@@ -55,7 +56,7 @@ class TweetCompiler:
             self.logger.info('Checking if more tweets need to be loaded...')
             matches_last_stored = list(filter(lambda id:
                 id == most_recent_tweet_id,
-                loaded_tweet_objects
+                list(loaded_tweet_objects)
             ))
             if len(matches_last_stored) > 0:
                 self.logger.info('No more tweets to be loaded.')
@@ -74,7 +75,7 @@ def all_tweets_query_api():
     tweets = Tweet.query.all()
     tweets = map(lambda x: {
         'id': x.id,
-        'timestamp': x.timestamp_str,
+        'timestamp': x.timestamp_int,
         'price': x.price},
         tweets)
     return list(tweets)

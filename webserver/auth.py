@@ -11,7 +11,6 @@ auth_views = Blueprint('auth_views', __name__,
 
 def validate_login(username, password):
     if check_password_hash(ADMIN_PASSWORD_HASH, password) and username == 'admin':
-        print('login validated')
         return True
     else:
         return False

@@ -28,7 +28,7 @@ def generate_command(password, debug, port):
     return env_dict
 
 @task
-def local(fabric_vars, password='', debug='True', port='8000'):
+def local(fabric_vars, password='', debug='True', port='5000'):
     env_dict = generate_command(password, debug, port)
     print('Starting server locally in debug mode at port ' + port + '.')
     start_string = 'gunicorn --timeout 6000 --bind localhost:' + port + ' run_all:app'

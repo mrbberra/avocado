@@ -6,6 +6,8 @@ import logging
 from webserver import db
 from .tweet_fetcher import TweetFetcher
 
+logger = logging.getLogger(__name__)
+
 class PriceValidationError(Exception):
     def __init__(self):
         self.message = 'This is not a valid price.'
@@ -14,7 +16,7 @@ class Tweet(db.Model):
 
     __tablename__ = 'tweet_table'
 
-    id = db.Column(db.BigInteger,  nullable=False, unique=True, primary_key=True)
+    id = db.Column(db.String(64),  nullable=False, unique=True, primary_key=True)
     timestamp_str = db.Column(db.String(128),  nullable=False)
     timestamp_int = db.Column(db.BigInteger,  nullable=False)
     price = db.Column(db.Float, nullable=False)
@@ -23,7 +25,7 @@ class Tweet(db.Model):
 
     def __init__(self, id, timestamp, price, location, embed_link):
         self.id = id
-        self.timestamp_str = timestamp.__str__()
+        self.timestamp_str = timestamp.__str__() # for human-readable api
         self.timestamp_int = self.calc_int_timestamp(timestamp)
         self.price = price
         self.location = location
@@ -45,15 +47,23 @@ class Tweet(db.Model):
             'embed_link': self.embed_link
         }
 
-def tweet_save_to_db(id, timestamp=0, price=-1, location='UK', embed_link=''):
-    tweet = Tweet(id, timestamp, price, location, embed_link)
+def tweet_upsert(id, timestamp=0, price=-1, location='UK', embed_link=''):
     db_existing_tweet = Tweet.query.filter_by(id=id).first()
     if not db_existing_tweet:
-        db.session.add(tweet)
+        logger.info('Did not find tweet with id=%s in DB. Inserting', id)
+        new_tweet = Tweet(id, timestamp, price, location, embed_link)
+        db.session.add(new_tweet)
         db.session.commit()
-    elif db_existing_tweet == tweet:
-        return
     else:
-        db.session.delete(db_existing_tweet)
-        db.session.add(tweet)
-        db.session.commit()
+        needs_update = False
+        if db_existing_tweet.price != price:
+            db_existing_tweet.price = price
+            needs_update = True
+        if db_existing_tweet.location != location:
+            db_existing_tweet.location = location
+            needs_update = True
+        if needs_update:
+            logger.info('Found tweet with id=%s in DB. Updating', id)
+            db.session.commit()
+        if needs_update:
+            logger.info('Found tweet with id=%s in DB. No change necessary', id)
