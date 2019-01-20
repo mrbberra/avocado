@@ -10,7 +10,8 @@ class TweetFetcher:
         # load twitter page using selenium
         options = webdriver.chrome.options.Options()
         options.add_argument('--no-sandbox')
-        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('window-size=1000x1000')
         options.set_headless(headless=True)
         if CHROMEDRIVER_PATH: # For heroku deploy only
             options.binary_location = CHROME_BIN
