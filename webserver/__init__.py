@@ -29,5 +29,4 @@ app.register_blueprint(main_views)
 
 # Build the database:
 # This will create the database file using SQLAlchemy
-db.drop_all()
 db.create_all()
