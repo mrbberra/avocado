@@ -1,3 +1,7 @@
+## About
+This is a work-in-progress site to visualize the data from https://twitter.com/hpavocadoprice.
+Tweets are downloaded using Selenium, checking for new posts every 5 minutes. Prices are manually updated by the site maintainers via an admin interface. The site is currently deployed at https://avocado-prices.herokuapp.com. The visualization is in progress, but the data is available at /data and /data/<tweet_id>, for any <tweet_id> listed in /data.
+
 ## Required
 - Python 3.6+
 - virtualenv and virtualenvwrapper (highly suggested)
