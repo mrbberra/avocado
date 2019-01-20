@@ -16,7 +16,7 @@ class Tweet(db.Model):
 
     id = db.Column(db.BigInteger,  nullable=False, unique=True, primary_key=True)
     timestamp_str = db.Column(db.String(128),  nullable=False)
-    timestamp_int = db.Column(db.Integer,  nullable=False)
+    timestamp_int = db.Column(db.BigInteger,  nullable=False)
     price = db.Column(db.Float, nullable=False)
     location = db.Column(db.String(2), nullable=False)
     embed_link = db.Column(db.Text, nullable=False)
