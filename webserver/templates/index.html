@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Hyde Park Avocado Price Index{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div id="graph"></div>
+<div class="tweet"></div>
+{% endblock %}
+
+{% block script %}
+<style>
+.line {
+  fill: none;
+  stroke: purple;
+}
+</style>
+<!-- load the d3.js library -->
+<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+  {% include "index-graph.js" %}
+</script>
+<script type="text/javascript">
+  {% include "index-tweet.js" %}
+</script>
+{% endblock %}
