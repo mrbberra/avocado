@@ -1,5 +1,6 @@
 # Import flask and template operators
 from flask import Flask
+from flask_bootstrap import Bootstrap
 
 # Import SQLAlchemy, CSRFProtect
 from flask_wtf.csrf import CSRFProtect
@@ -8,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 # Define the WSGI application object
 app = Flask(__name__)
 csrf = CSRFProtect(app)
+Bootstrap(app)
 
 # Configurations
 app.config.from_object('config')

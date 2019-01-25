@@ -9,7 +9,7 @@
 var svg = d3.select('#graph').append("svg")
 .attr('width', 1000)
 .attr('height', 500)
-var margin = {top: 20, right: 80, bottom: 20, left: 80},
+var margin = {top: 20, right: 20, bottom: 45, left: 35},
 width = +svg.attr("width") - margin.left - margin.right,
 height = +svg.attr("height") - margin.top - margin.bottom,
 g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -64,32 +64,54 @@ d3.json("/data", function(error, data) {
   svg.append("path")
   .data([cleandata])
   .attr("class", "line")
+  .attr("transform", "translate(" + margin.left + ",0)")
   .attr("d", priceLine);
+
+  // Add the X Axis
+  svg.append("g")
+  .attr("transform", "translate(" + margin.left + "," + height + ")")
+  .call(d3.axisBottom(x)
+    .tickFormat(dateFormat)
+    .ticks(10))
+  .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-65)");
+
+  // Add the Y Axis
+  svg.append("g")
+  .attr("transform", "translate(" + margin.left + ",0)")
+  .call(d3.axisLeft(y)
+    .tickFormat(d3.format("($.2f")));
 
   // Add the dots.
   svg.selectAll(".dot")
   .data(cleandata)
   .enter().append("circle")
   .filter(function(d) { return d.price >= 0 })
+  .attr("transform", "translate(" + margin.left + ",0)")
   .attr("r", 5)
   .attr("cx", function(d) { return x(d.date); })
   .attr("cy", function(d) { return y(d.price); })
   .attr("class", "dot")
-  .style("fill", "purple")
+  .style("fill", "darkgreen")
   .on("mouseover", function(d) {
-    d3.select(this).attr("r", 10).style("fill", "pink");
+    d3.select(this).attr("r", 15).style("fill", "url(#avocado-img)");
     tooltip.transition()
     .duration(200)
     .style("opacity", 1);
     tooltip.html("Price: $" + d.price + "<br/> Date: " + timeAndDateFormat(d.date)
     + "<br/> Click for source")
-    .style("background", "pink")
+    .style("background", "yellowgreen")
     .style("position", "absolute")
+    .style("border-radius", "3px")
+    .style("padding", "4px")
     .style("left", (d3.event.pageX + 10) + "px")
     .style("top", (d3.event.pageY + 10) + "px");
   })
   .on("mouseout", function(d) {
-    d3.select(this).attr("r", 5).style("fill", "purple");
+    d3.select(this).attr("r", 5).style("fill", "darkgreen");
     tooltip.transition()
     .duration(100)
     .style("opacity", 0);
@@ -97,15 +119,5 @@ d3.json("/data", function(error, data) {
   .on("click", function(d) {
     tweet.attr("id", d.id);
   });
-
-  // Add the X Axis
-  svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
-  .call(d3.axisBottom(x)
-  .tickFormat(dateFormat));
-
-  // Add the Y Axis
-  svg.append("g")
-  .call(d3.axisLeft(y));
 
 });

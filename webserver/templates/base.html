@@ -1,17 +1,29 @@
-<!doctype html>
-<head>
-</head>
-<title>{% block title %}{% endblock %} - Avocados</title>
-<nav>
-  <h1>Avocados</h1>
+{% extends 'bootstrap/base.html' %}
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='avocado.png') }}">
+{% endblock %}
+
+{% block title %}{% block page_name %}{% endblock %} - Avocados{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-static">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Hyde Park Avocado Price Index</a>
+    </div>
+  </div><!-- /.container-fluid -->
 </nav>
-<section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block content %}{% endblock %}
-</section>
-{% block script %}{% endblock %}
+{% for message in get_flashed_messages() %}
+  <div class="flash">{{ message }}</div>
+{% endfor %}
+{% block page_content %}{% endblock %}
+{% endblock %}

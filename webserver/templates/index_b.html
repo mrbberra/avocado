@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Hyde Park Avocado Price Index{% endblock %}
+
+{% block page_content %}
+<svg id="mySvg" width="80" height="80">
+  <defs id="mdef">
+    <pattern id="avocado-img" x="0" y="0" height="25" width="25">
+      <image x="0" y="0" width="25" height="25" xlink:href="{{ url_for('static', filename='avocado.png') }}"></image>
+    </pattern>
+  </defs>
+</svg>
+<div id="graph"></div>
+<div class="tweet"></div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/index.css') }}" />
+
+<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+  {% include "index-graph.js" %}
+</script>
+<script type="text/javascript">
+  {% include "index-tweet.js" %}
+</script>
+{% endblock %}
