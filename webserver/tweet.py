@@ -56,7 +56,7 @@ def tweet_upsert(id, timestamp=0, price=-1, location='UK', embed_link=''):
         db.session.commit()
     else:
         needs_update = False
-        if db_existing_tweet.price != price:
+        if db_existing_tweet.price != price and new_tweet.price != -1: # don't save over priced tweet with unpriced tweet
             db_existing_tweet.price = price
             needs_update = True
         if db_existing_tweet.location != location:
