@@ -43,7 +43,7 @@ d3.json("/data", function(error, data) {
   if (error) throw error;
 
   // format the data
-  sorteddata = data.sort(function(x, y){
+  var sorteddata = data.sort(function(x, y){
     return d3.ascending(x.date, y.date);
   })
 
