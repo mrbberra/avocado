@@ -43,8 +43,12 @@ d3.json("/data", function(error, data) {
   if (error) throw error;
 
   // format the data
+  sorteddata = data.sort(function(x, y){
+    return d3.ascending(x.date, y.date);
+  })
+
   var cleandata = [];
-  data.forEach(function(d) {
+  sorteddata.forEach(function(d) {
     if (d.price >= 0) {
       cd = {}
       cd.date = new Date(+d.timestamp*1000 + 946703400000);
