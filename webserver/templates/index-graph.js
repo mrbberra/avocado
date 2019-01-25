@@ -44,7 +44,7 @@ d3.json("/data", function(error, data) {
 
   // format the data
   var sorteddata = data.sort(function(x, y){
-    return d3.ascending(x.date, y.date);
+    return d3.ascending(x.timestamp, y.timestamp);
   })
 
   var cleandata = [];
