@@ -9,6 +9,11 @@ import webserver.tweet_compiler as tweet_compiler
 main_views = Blueprint('main_views', __name__,
                         template_folder='templates')
 
+@main_views.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static', 'images'),
+                               'favicon.ico', mimetype='image/png')
+
 @main_views.route("/index")
 @main_views.route("/")
 def index_view():
