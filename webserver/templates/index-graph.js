@@ -69,6 +69,7 @@ d3.json("/data", function(error, data) {
   .data([cleandata])
   .attr("class", "line")
   .attr("transform", "translate(" + margin.left + ",0)")
+  .style("stroke-dasharray", ("3, 3"))
   .attr("d", priceLine);
 
   // Add the X Axis
