@@ -12,7 +12,7 @@ main_views = Blueprint('main_views', __name__,
 @main_views.route("/index")
 @main_views.route("/")
 def index_view():
-    return render_template('index_b.html')
+    return render_template('index.html')
 
 @main_views.route('/admin', methods=['GET', 'POST'])
 def admin_view():
