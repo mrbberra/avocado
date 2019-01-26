@@ -8,6 +8,20 @@
 {% block title %}{% block page_name %}{% endblock %} - Avocados{% endblock %}
 
 {% block content %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">About</h5>
+      </div>
+      <div class="modal-body">
+        The Hyde Park Avocado Price Index  is a REST API and graph interface for the @hpavocadoprice  Twitter account (no affiliation on my part with either Twitter or the account, although I did ask the account owner for permission). The backend of site was built using Selenium  to scrape the Twitter data, Python to parse it, PostgreSQL to save it, and Flask to serve it. The front end uses JavaScript's D3 library to create an interactive visualization.
+      </div>
+    </div>
+  </div>
+</div>
+
 <nav class="navbar navbar-static">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -18,11 +32,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Hyde Park Avocado Price Index</a>
+      <a class="navbar-brand" href="#">🥑🥑🥑 Hyde Park Avocado Price Index 🥑🥑🥑</a>
     </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="#">About</a></li>
+    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a id="about" href="#" data-toggle="modal" data-target="#exampleModal">About</a></li>
       </ul>
     </div>
   </div><!-- /.container-fluid -->
@@ -31,4 +45,12 @@
   <div class="flash">{{ message }}</div>
 {% endfor %}
 {% block page_content %}{% endblock %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<style>
+@import url('https://fonts.googleapis.com/css?family=Heebo|Teko:600');
+</style>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/base.css') }}" />
 {% endblock %}

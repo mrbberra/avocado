@@ -21,14 +21,19 @@
 .tweet h3 {
   display: inline-block;
   color: #202819;
+  font-family: 'Heebo', sans-serif;
 }
 .tweet twitter-widget {
   display: inline-block;
-  margin-left: 200px;
-}
-body {
-  background: #A4D189;
+  margin-left: 150px;
 }
 text {
   color: #202819;
+  font-family: 'Heebo', sans-serif;
+}
+.tooltip {
+  background: #A4D189;
+  position: absolute;
+  border-radius: 3px;
+  padding: 4px;
 }

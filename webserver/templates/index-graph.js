@@ -106,12 +106,7 @@ d3.json("/data", function(error, data) {
     tooltip.transition()
     .duration(200)
     .style("opacity", 1);
-    tooltip.html("Price: $" + d.price + "<br/> Date: " + timeAndDateFormat(d.date)
-    + "<br/> Click for source")
-    .style("background", "yellowgreen")
-    .style("position", "absolute")
-    .style("border-radius", "3px")
-    .style("padding", "4px")
+    tooltip.html("Price: $" + d.price + "<br/> Date: " + timeAndDateFormat(d.date))
     .style("left", (d3.event.pageX + 10) + "px")
     .style("top", (d3.event.pageY + 10) + "px");
   })
