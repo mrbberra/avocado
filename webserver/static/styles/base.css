@@ -1,0 +1,41 @@
+body {
+  background: #A4D189;
+}
+.navbar {
+  background: #C5E5B3;
+  text: #202819;
+  font-family: 'Teko', sans-serif;
+  border-radius: 4px;
+}
+.navbar a {
+  background: #C5E5B3;
+  color: #202819;
+  font-family: 'Teko', sans-serif;
+  border-radius: 4px;
+  font-size: 2.5em;
+}
+#about:hover  {
+  background: #A4D189;
+}
+#about {
+  background: #C5E5B3;
+  color: #202819;
+  font-size: 1.75em;
+  border-radius: 4px;
+}
+.modal-content {
+  background-color: transparent;
+}
+.modal-header {
+  background: #A4D189;
+  border-radius: 4px;
+}
+.modal-title {
+  font-family: 'Teko', sans-serif;
+  font-size: 2em;
+}
+.modal-body {
+  background: #C5E5B3;
+  font-family: 'Heebo', sans-serif;
+  border-radius: 4px;
+}
