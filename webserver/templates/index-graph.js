@@ -7,7 +7,7 @@
 // set the dimensions and margins of the graph
 // and create the svg inside the graph div
 var svg = d3.select('#graph').append("svg")
-.attr('width', 1000)
+.attr('width', 800)
 .attr('height', 500)
 var margin = {top: 20, right: 20, bottom: 45, left: 35},
 width = +svg.attr("width") - margin.left - margin.right,

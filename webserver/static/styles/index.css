@@ -2,3 +2,33 @@
   fill: none;
   stroke: darkgreen;
 }
+#graph-container {
+  background: #C5E5B3;
+  width: 900px;
+  height: 600px;
+  padding: 50px;
+  border-radius: 4px;
+  margin:0 auto;
+}
+.tweet {
+  background: #C5E5B3;
+  width: 900px;
+  padding: 50px;
+  border-radius: 4px;
+  margin:0 auto;
+  text-align: center;
+}
+.tweet h3 {
+  display: inline-block;
+  color: #202819;
+}
+.tweet twitter-widget {
+  display: inline-block;
+  margin-left: 200px;
+}
+body {
+  background: #A4D189;
+}
+text {
+  color: #202819;
+}
