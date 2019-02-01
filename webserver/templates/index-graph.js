@@ -96,22 +96,22 @@ d3.json("/data", function(error, data) {
   .enter().append("circle")
   .filter(function(d) { return d.price >= 0 })
   .attr("transform", "translate(" + margin.left + ",0)")
-  .attr("r", 5)
+  .attr("r", 3)
   .attr("cx", function(d) { return x(d.date); })
   .attr("cy", function(d) { return y(d.price); })
   .attr("class", "dot")
   .style("fill", "darkgreen")
   .on("mouseover", function(d) {
-    d3.select(this).attr("r", 15).style("fill", "url(#avocado-img)");
+    d3.select(this).attr("r", 12).style("fill", "url(#avocado-img)");
     tooltip.transition()
     .duration(200)
     .style("opacity", 1);
-    tooltip.html("Price: $" + d.price + "<br/> Date: " + timeAndDateFormat(d.date))
+    tooltip.html("Price: $" + d3.format("($.2f")(d.price) + "<br/> Date: " + timeAndDateFormat(d.date))
     .style("left", (d3.event.pageX + 10) + "px")
     .style("top", (d3.event.pageY + 10) + "px");
   })
   .on("mouseout", function(d) {
-    d3.select(this).attr("r", 5).style("fill", "darkgreen");
+    d3.select(this).attr("r", 3).style("fill", "darkgreen");
     tooltip.transition()
     .duration(100)
     .style("opacity", 0);
