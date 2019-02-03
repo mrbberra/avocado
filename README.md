@@ -1,6 +1,6 @@
 ## About
 This is a work-in-progress site to visualize the data from https://twitter.com/hpavocadoprice.
-Tweets are downloaded using Selenium, checking for new posts every 5 minutes. Prices are manually updated by the site maintainers via an admin interface. The site is currently deployed at https://avocado-prices.herokuapp.com. The visualization is in progress, but the data is available at /data and /data/<tweet_id>, for any <tweet_id> listed in /data.
+Tweets are downloaded using Selenium, checking for new posts every 5 minutes. Prices are manually updated by the site maintainers via an admin interface. The site is currently deployed at https://avocado-prices.herokuapp.com. The data is available at /data and /data/<tweet_id>, for any <tweet_id> listed in /data.
 
 ## Required
 - Python 3.6+
@@ -46,3 +46,7 @@ The port, password, and debug mode are all configurable:
 ```
 $ fab local --password=admin --port=8000 --debug=False
 ```
+
+## Running the tests against a local development server
+There are two types of tests, functional frontend tests that run against the development server using Selenium, and backend tests that call the modules directly.
+Running `fab test --port=5000` will run server, and then the tests. The default port is 5000, and configurable. The tests are still in progress, and I'm figuring out how to get the backend tests to run the way they should.
