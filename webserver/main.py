@@ -1,7 +1,7 @@
 import os
 import threading
 from flask import Flask, render_template, redirect, url_for, request,\
- session, Blueprint
+ session, Blueprint, send_from_directory
 
 from webserver import db
 import webserver.tweet_compiler as tweet_compiler

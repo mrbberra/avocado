@@ -1,7 +1,6 @@
 import os
 
-# Define the database - we are working with
-# SQLite for this example
+# Define the database
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 DATABASE_CONNECT_OPTIONS = {}
 
@@ -20,3 +19,5 @@ CSRF_SESSION_KEY = os.environ['CSRF_KEY']
 
 # Secret key for signing cookies
 SECRET_KEY = os.environ['SECRET_KEY']
+
+SQLALCHEMY_TRACK_MODIFICATIONS = False

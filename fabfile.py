@@ -2,6 +2,7 @@ from fabric import Connection, task
 import random
 import string
 import os
+import time
 from werkzeug.security import generate_password_hash
 
 def generate_random_string(num_charachters):
@@ -9,7 +10,7 @@ def generate_random_string(num_charachters):
         string.ascii_lowercase + string.ascii_uppercase + string.digits,
         k=num_charachters))
 
-def generate_command(password, debug, port):
+def generate_env(password, debug, port):
     base_dir = os.path.abspath(os.path.dirname(__file__))
     if password == '':
         password = generate_random_string(15)
@@ -27,10 +28,28 @@ def generate_command(password, debug, port):
     print('PLEASE RECORD YOUR ADMIN PASSWORD: ' + password)
     return env_dict
 
-@task
+@task(optional=['password', 'debug', 'port'])
 def local(fabric_vars, password='', debug='True', port='5000'):
-    env_dict = generate_command(password, debug, port)
+    env_dict = generate_env(password, debug, port)
     print('Starting server locally in debug mode at port ' + port + '.')
     start_string = 'gunicorn --timeout 6000 --bind localhost:' + port + ' run_all:app'
     with Connection('localhost') as c:
         c.local(start_string, env=env_dict)
+
+@task(optional=['port'])
+def test(fabric_vars, port='5000'):
+    password = 'testing_password'
+    debug = 'True'
+    env_dict = generate_env(password, debug, port)
+    env_dict['PASSWORD'] = password
+
+    print('Starting server locally in debug mode at port ' + port + '.')
+    start_string = 'gunicorn --daemon --timeout 6000 --bind localhost:' + port + ' run_all:app'
+    site_test_string = 'pytest --driver Chrome --host 127.0.0.1 --port ' + port + ' webserver/test/site_test.py'
+    tweet_test_string = 'pytest webserver/test/tweet_test.py'
+    with Connection('localhost') as c:
+        c.local(tweet_test_string, env=env_dict)
+        c.local(start_string, env=env_dict)
+        time.sleep(2)
+        c.local(site_test_string, env=env_dict)
+        c.local('pkill gunicorn')

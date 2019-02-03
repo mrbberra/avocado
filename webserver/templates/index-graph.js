@@ -106,7 +106,7 @@ d3.json("/data", function(error, data) {
     tooltip.transition()
     .duration(200)
     .style("opacity", 1);
-    tooltip.html("Price: $" + d3.format("($.2f")(d.price) + "<br/> Date: " + timeAndDateFormat(d.date))
+    tooltip.html("Price: $" + d3.format("(.2f")(d.price) + "<br/> Date: " + timeAndDateFormat(d.date))
     .style("left", (d3.event.pageX + 10) + "px")
     .style("top", (d3.event.pageY + 10) + "px");
   })

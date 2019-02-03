@@ -12,13 +12,13 @@ class TweetFetcher:
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('window-size=1000x1000')
-        options.set_headless(headless=True)
+        options.headless = True
         if CHROMEDRIVER_PATH: # For heroku deploy only
             options.binary_location = CHROME_BIN
             self.browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,
                 chrome_options=options)
         else:
-            self.browser = webdriver.Chrome(chrome_options=options)
+            self.browser = webdriver.Chrome(options=options)
         self.browser.get('https://twitter.com/hpavocadoprice')
 
     def _find_timeline_end_div(self):

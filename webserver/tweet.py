@@ -49,9 +49,9 @@ class Tweet(db.Model):
 
 def tweet_upsert(id, timestamp=0, price=-1, location='UK', embed_link=''):
     db_existing_tweet = Tweet.query.filter_by(id=id).first()
+    new_tweet = Tweet(id, timestamp, price, location, embed_link)
     if not db_existing_tweet:
         logger.info('Did not find tweet with id=%s in DB. Inserting', id)
-        new_tweet = Tweet(id, timestamp, price, location, embed_link)
         db.session.add(new_tweet)
         db.session.commit()
     else:
