@@ -5,7 +5,7 @@ bcrypt==3.1.5
 cffi==1.11.5
 Click==7.0
 cryptography==2.4.2
-Django==2.1.2
+Django==2.1.11
 dominate==2.3.5
 fabric==2.4.0
 Flask==1.0.2
